@@ -2,7 +2,16 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-const PARTICLES = ["🌸", "💐", "🌺"];
+const PARTICLES = [
+    "/assets/images/webp/img-1.webp",
+    "/assets/images/webp/img-2.webp",
+    "/assets/images/webp/img-3.webp",
+    "/assets/images/webp/img-4.webp",
+    "/assets/images/webp/img-5.webp",
+    "/assets/images/webp/img-6.webp",
+    "/assets/images/webp/img-7.webp",
+    "/assets/images/webp/img-8.webp"
+];
 
 const Pricing = () => {
     const containerRef = useRef(null);
@@ -21,13 +30,17 @@ const Pricing = () => {
             position: "fixed",
             left: `${x}px`,
             top: `${y}px`,
-            fontSize: `${random(120, 180)}px`,
             transform: "translate(-50%, -50%)",
             pointerEvents: "none",
             zIndex: 9999,
         });
-        el.className = "text-pink-400 font-semibold";
-        el.textContent = PARTICLES[Math.floor(Math.random() * PARTICLES.length)];
+
+        const img = document.createElement("img");
+        img.src = PARTICLES[Math.floor(Math.random() * PARTICLES.length)];
+        img.style.width = `${random(40, 60)}px`;
+        img.style.height = `${random(40, 60)}px`;
+        el.appendChild(img);
+
         document.body.appendChild(el);
         gsap.to(el, {
             x: random(-window.innerWidth / 2, window.innerWidth / 2),
@@ -47,15 +60,22 @@ const Pricing = () => {
         trail.current = [{ x, y }];
 
         const flower = document.createElement("span");
-        flower.className = "fixed text-pink-400 font-semibold pointer-events-none";
+        flower.className = "fixed pointer-events-none";
         Object.assign(flower.style, {
-            fontSize: "100px",
+            fontSize: "170px",
             left: `${x}px`,
             top: `${y}px`,
             transform: "translate(-50%, -50%)",
+            zIndex: 9999
         });
+
+        const img = document.createElement("img");
+        img.src = PARTICLES[Math.floor(Math.random() * PARTICLES.length)];
+        img.style.width = "100px";
+        img.style.height = "100px";
+        flower.appendChild(img);
+
         document.body.appendChild(flower);
-        flower.innerText = PARTICLES[Math.floor(Math.random() * PARTICLES.length)];
         flowerRef.current = flower;
 
         const svgLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -100,7 +120,7 @@ const Pricing = () => {
                 onComplete: () => {
                     flowerRef.current?.remove();
                     flowerRef.current = null;
-                    if (x && y) for (let i = 0; i < 60; i++) createParticle(x + random(-10, 10), y + random(-10, 10));
+                    if (x && y) for (let i = 0; i < 160; i++) createParticle(x + random(-10, 10), y + random(-10, 10));
                 }
             });
         }
@@ -125,7 +145,7 @@ const Pricing = () => {
                 y: () => random(500, 800),
                 rotation: () => random(-15, 15),
                 opacity: 0,
-                duration: 2.5,
+                duration: 1.5,
                 ease: "power2.inOut",
                 stagger: 0.2,
                 onUpdate: () => {
@@ -137,8 +157,8 @@ const Pricing = () => {
                     }
                 }
             }, "+=0.5")
-            .fromTo(sonamRef.current, {y:-400, opacity: 0, scale: 0.5 }, {
-                y:0,
+            .fromTo(sonamRef.current, { y: -400, opacity: 0, scale: 0.5 }, {
+                y: 0,
                 opacity: 1,
                 scale: 1,
                 duration: 1
@@ -153,14 +173,16 @@ const Pricing = () => {
     }, []);
 
     return (
-        <div ref={containerRef} className="bg-black min-h-screen flex justify-center  items-center overflow-hidden select-none px-4">
+        <div ref={containerRef} className="bg-black min-h-screen flex justify-center items-center overflow-hidden select-none px-4">
             <div className="relative h-full w-fit">
-                <div className="text-center flex space-x-4 text-sky-300 lg:text-[300px] md:text-[150px] text-8xl font-bold">
-                    {["s", "o", "n", "a", "m"].map((char, i) => (
-                        <span key={i} ref={(el) => (helloRefs.current[i] = el)}>{char}</span>))}
+                <div className="text-center flex space-x-4 text-sky-300 lg:text-[300px] md:text-[150px] text-7xl font-bold">
+                    {["S", "o", "n", "a", "m"].map((char, i) => (
+                        <span key={i} ref={(el) => (helloRefs.current[i] = el)}>{char}</span>
+                    ))}
                 </div>
                 <div ref={sonamRef} className="absolute inset-0 flex justify-center items-center text-center text-sky-300 md:text-[80px] text-6xl font-bold opacity-0">
-                    Frontend Developer </div>
+                    Frontend Developer
+                </div>
             </div>
         </div>
     );
